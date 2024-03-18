@@ -1,61 +1,53 @@
 ---
 import { db, Category, Todo } from 'astro:db'
+const categories = await db.select().from(Category)
 
 if (Astro.request.method === 'POST') {
-  // Crear Todo
   const formData = await Astro.request.formData()
-  const titulo = formData.get('titulo')
-  const descripcion = formData.get('descripcion')
-  const categoria = formData.get('categoria')
+  const title = formData.get('title')
+  const description = formData.get('description')
+  const category_id = formData.get('category_id')
 
-  console.log({ titulo, descripcion, categoria })
-
-  if (!titulo || !descripcion || !categoria) {
-    return new Response('Faltan datos', { status: 400 })
-  }
+  console.log({ title, description, category_id })
 
   if (
-    typeof titulo === 'string' &&
-    typeof descripcion === 'string' &&
-    typeof categoria === 'string' &&
-    titulo.length > 0 &&
-    descripcion.length > 0
+    typeof title === 'string' &&
+    typeof description === 'string' &&
+    typeof category_id === 'string'
   ) {
     await db.insert(Todo).values({
-      title: titulo,
-      description: descripcion,
-      category_id: categoria,
-      user_id: '333'
+      title,
+      description,
+      category_id,
+      user_id: '222'
     })
   } else {
     console.log('Datos incorrectos')
   }
 }
-
-const categories = await db.select().from(Category)
 ---
 
 <form method='post'>
-  <label for='titulo'>Título:</label>
+  <label for='title'>Título:</label>
   <input
     type='text'
-    id='titulo'
-    name='titulo'
+    id='title'
+    name='title'
     required
   />
 
-  <label for='descripcion'>Descripción:</label>
+  <label for='description'>Descripción:</label>
   <textarea
-    id='descripcion'
-    name='descripcion'
+    id='description'
+    name='description'
     required
   >
   </textarea>
 
-  <label for='categoria'>Categoría:</label>
+  <label for='category_id'>Categoría:</label>
   <select
-    id='categoria'
-    name='categoria'
+    id='category_id'
+    name='category_id'
     required
   >
     {
@@ -80,6 +72,7 @@ const categories = await db.select().from(Category)
 
   form > * {
     font-size: 1rem;
+    font-family: inherit;
   }
 
   label {
@@ -89,6 +82,7 @@ const categories = await db.select().from(Category)
   input,
   textarea,
   select {
+    unset: 0;
     padding: 0.5rem;
     border-radius: 0.25rem;
   }
