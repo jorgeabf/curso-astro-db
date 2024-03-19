@@ -83,28 +83,24 @@ const $$Astro$2 = createAstro();
 const $$CrearTodo = createComponent(async ($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$2, $$props, $$slots);
   Astro2.self = $$CrearTodo;
+  const categories = await db.select().from(Category);
   if (Astro2.request.method === "POST") {
     const formData = await Astro2.request.formData();
-    const titulo = formData.get("titulo");
-    const descripcion = formData.get("descripcion");
-    const categoria = formData.get("categoria");
-    console.log({ titulo, descripcion, categoria });
-    if (!titulo || !descripcion || !categoria) {
-      return new Response("Faltan datos", { status: 400 });
-    }
-    if (typeof titulo === "string" && typeof descripcion === "string" && typeof categoria === "string" && titulo.length > 0 && descripcion.length > 0) {
+    const title = formData.get("title");
+    const description = formData.get("description");
+    const category_id = formData.get("category_id");
+    if (typeof title === "string" && typeof description === "string" && typeof category_id === "string") {
       await db.insert(Todo).values({
-        title: titulo,
-        description: descripcion,
-        category_id: categoria,
-        user_id: "333"
+        title,
+        description,
+        category_id,
+        user_id: "222"
       });
     } else {
       console.log("Datos incorrectos");
     }
   }
-  const categories = await db.select().from(Category);
-  return renderTemplate`${maybeRenderHead()}<form method="post" data-astro-cid-bliaqqdf> <label for="titulo" data-astro-cid-bliaqqdf>Título:</label> <input type="text" id="titulo" name="titulo" required data-astro-cid-bliaqqdf> <label for="descripcion" data-astro-cid-bliaqqdf>Descripción:</label> <textarea id="descripcion" name="descripcion" required data-astro-cid-bliaqqdf>  </textarea> <label for="categoria" data-astro-cid-bliaqqdf>Categoría:</label> <select id="categoria" name="categoria" required data-astro-cid-bliaqqdf> ${categories.map((category) => renderTemplate`<option${addAttribute(category.id, "value")} data-astro-cid-bliaqqdf>${category.label}</option>`)} </select> <button type="submit" data-astro-cid-bliaqqdf>Enviar</button> </form> `;
+  return renderTemplate`${maybeRenderHead()}<form method="post" data-astro-cid-bliaqqdf> <label for="title" data-astro-cid-bliaqqdf>Título:</label> <input type="text" id="title" name="title" required data-astro-cid-bliaqqdf> <label for="description" data-astro-cid-bliaqqdf>Descripción:</label> <textarea id="description" name="description" required data-astro-cid-bliaqqdf>  </textarea> <label for="category_id" data-astro-cid-bliaqqdf>Categoría:</label> <select id="category_id" name="category_id" required data-astro-cid-bliaqqdf> ${categories.map((category) => renderTemplate`<option${addAttribute(category.id, "value")} data-astro-cid-bliaqqdf>${category.label}</option>`)} </select> <button type="submit" data-astro-cid-bliaqqdf>Enviar</button> </form> `;
 }, "C:/Users/jorge/workspace/curso-astro-db/src/components/CrearTodo.astro", void 0);
 
 const $$Astro$1 = createAstro();
@@ -120,7 +116,7 @@ const $$Index = createComponent(async ($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$Index;
   const todos = await db.select().from(Todo).innerJoin(User, eq(Todo.user_id, User.id)).innerJoin(Category, eq(Todo.category_id, Category.id));
-  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": "Curso Astro db", "data-astro-cid-j7pv25f6": true }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<main data-astro-cid-j7pv25f6> <h1 data-astro-cid-j7pv25f6>Astro <span class="text-gradient" data-astro-cid-j7pv25f6>db</span></h1> ${renderComponent($$result2, "CrearTodo", $$CrearTodo, { "data-astro-cid-j7pv25f6": true })} <ul role="list" class="grid" data-astro-cid-j7pv25f6> ${todos.map(({ Todo: Todo2, User: User2, Category: Category2 }) => renderTemplate`${renderComponent($$result2, "Card", $$Card, { "title": Todo2.title, "data-astro-cid-j7pv25f6": true }, { "default": ($$result3) => renderTemplate` <h4 data-astro-cid-j7pv25f6>Creado por: ${User2.username}</h4> <p data-astro-cid-j7pv25f6>Descricción: ${Todo2.description}</p> <code data-astro-cid-j7pv25f6>Category: ${Category2.label}</code> ` })}`)} </ul> </main> ` })} `;
+  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": "Curso Astro db", "data-astro-cid-j7pv25f6": true }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<main data-astro-cid-j7pv25f6> <h1 data-astro-cid-j7pv25f6>Astro <span class="text-gradient" data-astro-cid-j7pv25f6>db</span></h1> ${renderComponent($$result2, "CrearTodo", $$CrearTodo, { "data-astro-cid-j7pv25f6": true })} <ul role="list" class="grid" data-astro-cid-j7pv25f6> ${todos.map(({ Todo: Todo2, User: User2, Category: Category2 }) => renderTemplate`${renderComponent($$result2, "Card", $$Card, { "title": Todo2.title, "data-astro-cid-j7pv25f6": true }, { "default": ($$result3) => renderTemplate` <h4 data-astro-cid-j7pv25f6>Creado por: ${User2.username}</h4> <p data-astro-cid-j7pv25f6>Descricción: ${Todo2.description}</p> <p data-astro-cid-j7pv25f6>Category: ${Category2.label}</p> ` })}`)} </ul> </main> ` })} `;
 }, "C:/Users/jorge/workspace/curso-astro-db/src/pages/index.astro", void 0);
 
 const $$file = "C:/Users/jorge/workspace/curso-astro-db/src/pages/index.astro";

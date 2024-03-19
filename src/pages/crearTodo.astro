@@ -1,4 +1,6 @@
 ---
+import Layout from '../layouts/Layout.astro'
+
 import { db, Category, Todo } from 'astro:db'
 const categories = await db.select().from(Category)
 
@@ -25,38 +27,40 @@ if (Astro.request.method === 'POST') {
 }
 ---
 
-<form method='post'>
-  <label for='title'>Título:</label>
-  <input
-    type='text'
-    id='title'
-    name='title'
-    required
-  />
+<Layout title='Formulario Crear Tarea'>
+  <form method='post'>
+    <label for='title'>Título:</label>
+    <input
+      type='text'
+      id='title'
+      name='title'
+      required
+    />
 
-  <label for='description'>Descripción:</label>
-  <textarea
-    id='description'
-    name='description'
-    required
-  >
-  </textarea>
+    <label for='description'>Descripción:</label>
+    <textarea
+      id='description'
+      name='description'
+      required
+    >
+    </textarea>
 
-  <label for='category_id'>Categoría:</label>
-  <select
-    id='category_id'
-    name='category_id'
-    required
-  >
-    {
-      categories.map((category) => (
-        <option value={category.id}>{category.label}</option>
-      ))
-    }
-  </select>
+    <label for='category_id'>Categoría:</label>
+    <select
+      id='category_id'
+      name='category_id'
+      required
+    >
+      {
+        categories.map((category) => (
+          <option value={category.id}>{category.label}</option>
+        ))
+      }
+    </select>
 
-  <button type='submit'>Enviar</button>
-</form>
+    <button type='submit'>Enviar</button>
+  </form>
+</Layout>
 
 <style>
   form {
