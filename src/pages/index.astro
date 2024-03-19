@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro'
-import CrearTodo from '../components/CrearTodo.astro'
 import Card from '../components/Card.astro'
 import { db, User, Todo, eq, Category } from 'astro:db'
 
@@ -14,7 +13,6 @@ const todos = await db
 <Layout title='Curso Astro db'>
   <main>
     <h1>Astro <span class='text-gradient'>db</span></h1>
-    <CrearTodo />
     <ul
       role='list'
       class='grid'
